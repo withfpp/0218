@@ -14,21 +14,82 @@
       <div class="navbar-inner">
         <a href="" class="brand">심플블로그</a>
         <ul class="nav">
-          <li><a href="#">Posts</a></li>
-          <li><a>About</a></li>
+          <li>{{#link-to 'posts'}}Posts{{/link-to}}</li>
+          <li>{{#link-to 'about'}}About{{/link-to}}</li>
         </ul>
+      </div>
+    </div>
+    {{outlet}}
+  </script>
+
+  <script type="text/x-handlebars" id="about">
+    <h1>소개</h1>
+    <p>Evernote가 추구하는 목표는 Evernote를 통해 전세계 사람들이 모든 것들을 기억하고 효과적으로 의사소통하며 업무를 더 효율적으로 처리할 수 있도록 도움을 주는 것입니다. 떠오르는 생각과 아이디어 저장에서 다른 사람과 효율적으로 작업한 경험을 간직하는 일에 이르기까지 Evernote의 어플리케이션 모음을 통해 쉽게 정리하고 생산성을 높일 수 있습니다.</p>
+    <p>
+    Evernote는 캘리포니아 레드우드 시티에 본사를 두고 있는 독립적인 민간 기업입니다. 주요 투자자로는 Meritech Capital, CBC Capital, Sequoia Capital, Morgenthaler Ventures 및 DOCOMO Capital이 있습니다..</p>
+  </script>
+
+  <script type="text/x-handlebars" id="posts">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <tabel class="table">
+            <thead>
+              <tr><th><h4> 최근 뉴스</h4></th></tr>
+            </thead>
+            {{#each}}
+            <tr><td>
+              {{#link-to 'post' this}}
+                {{title}} <small class="muted">by {{author.name}}</small>
+              {{/link-to}}  
+            </td></tr>
+            {{/each}}
+          </tabel>
+        </div>
+        <div class="span9">
+          {{outlet}}
+        </div>
       </div>
     </div>
   </script>
 
+  <script type="text/x-handlebars" id="post">
 
+    {{#if isEditing}}
+      {{partial 'post/edit'}}
+      <button {{action 'doneEditing'}}>Done</button>
+    {{else}}  
+      <button {{action 'edit'}}>Edit</button>
+    {{/if}}
+
+    <h1>{{title}}</h1>
+    <h2>by {{author.name}} <small class="muted">{{format-date date}}</small></h2>
+    <hr>
+
+    <div class="intro">
+      {{excerpt}}
+    </div>
+
+    <div class='below-the-fold'>
+      {{body}}
+    </div>  
+  </script>
+ 
+  <script type="text/x-handlebars" id="post/_edit">
+    <p>{{input type="text" value=title}}</p>
+    <p>{{input type="text" value=excerpt}}</p>
+    <p>{{textarea value=body}}</p>
+  </script>
+
+
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
   <script src="js/libs/jquery-1.10.2.js"></script>
   <script src="js/libs/handlebars-1.1.2.js"></script>
   <script src="js/libs/ember-1.4.0.js"></script>
   <script src="js/app.js"></script>
   <!-- to activate the test runner, add the "?test" query string parameter -->
   <script src="tests/runner.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
 </body>
 </html>
